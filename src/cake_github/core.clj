@@ -25,36 +25,45 @@
 
 (defn format-line [lt k v] (str (format lt (.replaceAll (str (name k) ":") "_" " ") v) "\n"))
 
-(defn format-keys [lt m keyseq] (apply str (for [[k v] (select-keys m keyseq)] (format-line lt k v))))
+(defn format-keys [lt m] (apply str (for [[k v] m] (format-line lt k v))))
 
-(defn order-format [lt m keyseq] (apply str (concat (map (partial format-keys lt m) keyseq))))
+(defn order-format [lt m keyseq]
+  (apply str (concat (map #(format-keys lt (select-keys m %)) keyseq))))
 
-(defn format-repo-result [m]
-  (let [width (apply max
-                     (map #(count (name (first %)))
-                          (select-keys m [:watchers :pushed_at :forks
-                                          :open_issues :created_at :pushed_at
-                                          :clone_url :ssh_clone_url])))
-        lt (line-template width)]
-    (str
-     (or (:owner m) (:username m)) "/"(:name m) (if (:fork m) " \u0470 " " ") "- " (:description m)
-     line
-     (when (:url m) (str (:url m) "\n"))
-     (order-format lt m [[:watchers :forks :open_issues]
-                         [:pushed_at :created_at]
-                         [:clone_url :ssh_clone_url]]))))
+(defn max-width [m]
+  (apply max (map #(count (name (first %))) m)))
+
+(defn format-repo-map [m]
+  (str
+   (or (:owner m) (:username m)) "/"(:name m) (if (:fork m) " \u0470 " " ") "- " (:description m)
+   line
+   (when (:url m) (str (:url m) "\n"))
+   (order-format
+    (line-template
+     (max-width
+      (select-keys m [:watchers :pushed_at :forks
+                      :open_issues :created_at :pushed_at
+                      :clone_url :ssh_clone_url :homepage])))
+    m [[:watchers :forks :open_issues :homepage]
+       [:pushed_at :created_at]
+       [:clone_url :ssh_clone_url]])))
+
+(defn format-generic-map [m]
+  (format-keys (line-template (max-width m)) m))
 
 ;; This will likely become a multimethod.
 (defn format-result-helper [result map-type]
   (str "\n"
        (cond
-        (and (map? result) (= map-type :repo)) (format-repo-result result)
-        (and (map? result) (= map-type :user)) result ;; Placeholder
+        (map? result)
+        (cond
+         (= map-type :repo) (format-repo-map result)
+         (= map-type :user) result ;; placeholder
+         (= map-type :generic) (format-generic-map result)) 
         (string? result) result
         (nil? result) "wut"
         (not (seq result)) "Nothing interested happened."
-        :else (apply str (interpose ", " result)))
-       "\n"))
+        :else (apply str (interpose ", " result)))))
 
 (defn option-to-int [opt default]
   (cond
