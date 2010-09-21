@@ -73,7 +73,7 @@
                    (if generate-clone-urls
                      (map clone-urls maps)
                      maps))))
-     (format-result-helper x map-type))))
+     (format-result-helper (if generate-clone-urls (clone-urls x) x) map-type))))
 
 (defn options [opts & options]
   (some opts options))
