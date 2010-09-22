@@ -48,6 +48,14 @@
        [:pushed_at :created_at]
        [:clone_url :ssh_clone_url]])))
 
+(defn format-user-map [m]
+  (str
+   (:name m) " - " (:email m)
+   line
+   (format-keys
+    (line-template (max-width m))
+    (select-keys m [:location :login :company :contributions :type]))))
+
 (defn format-generic-map [m]
   (format-keys (line-template (max-width m)) m))
 
@@ -58,12 +66,12 @@
         (map? result)
         (cond
          (= map-type :repo) (format-repo-map result)
-         (= map-type :user) result ;; placeholder
+         (= map-type :user) (format-user-map result)
          (= map-type :generic) (format-generic-map result)) 
         (string? result) result
         (nil? result) "wut"
-        (not (seq result)) "Nothing interested happened."
-        :else (apply str (interpose ", " result)))))
+        (not (seq result)) "Nothing interested happened.\n"
+        :else (str (apply str (interpose ", " result)) "\n"))))
 
 (defn option-to-int [opt default]
   (cond
