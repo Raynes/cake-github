@@ -1,7 +1,7 @@
 (ns cake-github.tasks
   (:use cake cake.core
         cake-github.core
-        [clj-github repos]))
+        [clj-github repos users]))
 
 ;; Repos ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (deftask github.repos.show
@@ -143,3 +143,20 @@
   "Set a repository's visibility. Pass in the name of the repo and either 'public' or 'private'."
   (format-result
    (set-repo-visibility ((:github.repos.visibility *opts*) 0) ((:github.repos.visibility *opts*) 1))))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;; Users ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(deftask github.users.follow
+  "Follow a user. Pass in the name of the user you want to follow."
+  (format-result (follow auth ((:github.users.follow *opts*) 0)) :map-type :user))
+
+(deftask github.users.search
+  "Search users. Pass in the query string. Optionally pass --results to limit results.
+   Default is three."
+  (format-result
+   (search-users auth ((:github.users.search *opts*) 0)) :map-type :user :max (:results *opts*)))
+
+(deftask github.users.followers
+  "Find out what users a user is following. Pass in the username."
+  (format-result (show-followers auth ((:github.users.followers *opts*) 0))))
