@@ -59,7 +59,10 @@
 (defn format-generic-map [m]
   (format-keys (line-template (max-width m)) m))
 
-;; This will likely become a multimethod.
+(defn format-sequence [s]
+  (apply str (apply concat (interpose ["\n"] (partition-all 10 (interpose ", " s))))))
+
+;; This might become a multimethod.
 (defn format-result-helper [result map-type]
   (str "\n"
        (cond
@@ -71,7 +74,7 @@
         (string? result) result
         (nil? result) "wut"
         (not (seq result)) "Nothing interested happened.\n"
-        :else (str (apply str (interpose ", " result)) "\n"))))
+        :else (str (format-sequence result) "\n"))))
 
 (defn option-to-int [opt default]
   (cond
