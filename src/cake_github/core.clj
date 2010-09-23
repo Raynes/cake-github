@@ -54,7 +54,17 @@
    line
    (format-keys
     (line-template (max-width m))
-    (select-keys m [:location :login :company :contributions :type]))))
+    (select-keys m [:location :login :company :contributions
+                    :public_repo_count :public_gist_count :blog
+                    :created_at :following_count]))))
+
+(defn format-gist-map [m]
+  (str
+   (str "http://gist.github.com/" (:repo m)) " - " (:description m)
+   line
+   (format-keys
+    (line-template (max-width m))
+    (select-keys m [:created_at :public :files :owner]))))
 
 (defn format-generic-map [m]
   (format-keys (line-template (max-width m)) m))
@@ -67,11 +77,13 @@
   (str "\n"
        (cond
         (map? result)
-        (cond
-         (= map-type :repo) (format-repo-map result)
-         (= map-type :user) (format-user-map result)
-         (= map-type :generic) (format-generic-map result)) 
-        (string? result) result
+        (case
+         map-type
+         :repo (format-repo-map result)
+         :user (format-user-map result)
+         :generic (format-generic-map result)
+         :gist (format-gist-map result))
+        (string? result) (str result "\n")
         (nil? result) "wut"
         (not (seq result)) "Nothing interested happened.\n"
         :else (str (format-sequence result) "\n"))))
