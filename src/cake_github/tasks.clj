@@ -214,3 +214,7 @@
   (format-result
    (show-users-gists auth ((:github.gists.show *opts*) 0))
    :map-type :gist :max (:results *opts*)))
+
+(deftask github.gists.meta
+  "Show a gist's metadata. Pass in the gist's ID."
+  (format-result (show-gist-meta auth ((:github.gists.meta *opts*) 0)) :map-type :gist))
