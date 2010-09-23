@@ -1,7 +1,7 @@
 (ns cake-github.tasks
   (:use cake cake.core
         cake-github.core
-        [clj-github repos users]))
+        [clj-github repos users gists]))
 
 ;; Repos ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (deftask github.repos.show
@@ -149,7 +149,11 @@
 ;; Users ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (deftask github.users.follow
   "Follow a user. Pass in the name of the user you want to follow."
-  (format-result (follow auth ((:github.users.follow *opts*) 0)) :map-type :user))
+  (format-result (follow auth ((:github.users.follow *opts*) 0))))
+
+(deftask github.users.unfollow
+  "Unfollow a user. Pass in the name of the user you want to unfollow."
+  (format-result (unfollow auth ((:github.users.unfollow *opts*) 0))))
 
 (deftask github.users.search
   "Search users. Pass in the query string. Optionally pass --results to limit results.
@@ -158,5 +162,55 @@
    (search-users auth ((:github.users.search *opts*) 0)) :map-type :user :max (:results *opts*)))
 
 (deftask github.users.followers
-  "Find out what users a user is following. Pass in the username."
+  "Find out what users are following a user. Pass in the user."
   (format-result (show-followers auth ((:github.users.followers *opts*) 0))))
+
+(deftask github.users.following
+  "Find out what users another user is following. Pass in the user."
+  (format-result (show-following auth ((:github.users.following *opts*) 0))))
+
+(deftask github.users.info
+  "View detailed information about a user. Pass in the name of the user."
+  (format-result (show-user-info auth ((:github.users.info *opts*) 0)) :map-type :user))
+
+(deftask github.users.watching
+  "Find out what repos a user is watching. Pass in the name of the user. Optionally
+   pass --results to limit results. Default is three."
+  (format-result
+   (show-watching auth ((:github.users.watching *opts*) 0))
+   :map-type :repo :max (:results *opts*)))
+
+(deftask github.users.set
+  "Set information about a user. Pass in the username, a key, and a value to set that key
+   to. Possible keys are name, email, blog, company, and location."
+  (format-result
+   (user-set auth
+             ((:github.users.set *opts*) 0)
+             ((:github.users.set *opts*) 1)
+             ((:github.users.set *opts*) 2))
+   :map-type :user))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Gists ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(deftask github.gists.new
+  "Gist a file. Pass in the path to the file relative to where this task is called."
+  (format-result
+   (str
+    "http://gist.github.com/"
+    (:repo
+     (let [gist-file ((:github.gists.new *opts*) 0)]
+       (new-gist auth
+                 (last (.split gist-file "/"))
+                 (slurp (str (System/getProperty "user.dir") "/" gist-file))))))))
+
+(deftask github.gists.contents
+  "Show the contents of a gist. Pass in the id of the gist and the file name."
+  (format-result
+   (show-gist auth ((:github.gists.contents *opts*) 0) ((:github.gists.contents *opts*) 1))))
+
+(deftask github.gists.show
+  "Show metadata for another user's gists. Pass in the name of the user. Pass in --results
+   to limit results. The default limit is three."
+  (format-result
+   (show-users-gists auth ((:github.gists.show *opts*) 0))
+   :map-type :gist :max (:results *opts*)))
