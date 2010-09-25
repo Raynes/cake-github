@@ -33,7 +33,9 @@
 (defn max-width [m]
   (apply max (map #(count (name (first %))) m)))
 
-(defn format-repo-map [m]
+(defmulti formatter :seq-type)
+
+(defmethod formatter :repo [{m :seq}]
   (str
    (or (:owner m) (:username m)) "/"(:name m) (if (:fork m) " \u0470 " " ") "- " (:description m)
    line
@@ -48,45 +50,56 @@
        [:pushed_at :created_at]
        [:clone_url :ssh_clone_url]])))
 
-(defn format-user-map [m]
+(defmethod formatter :user [{m :seq}]
   (str
    (:name m) " - " (:email m)
    line
+   "http://github.com/" (:login m) "\n"
    (format-keys
     (line-template (max-width m))
     (select-keys m [:location :login :company :contributions
                     :public_repo_count :public_gist_count :blog
-                    :created_at :following_count]))))
+                    :created_at :following_count :gravatar_id]))))
 
-(defn format-gist-map [m]
+(defmethod formatter :gist [{m :seq}]
   (str
-   (str "http://gist.github.com/" (:repo m)) " - " (:description m)
+   "http://gist.github.com/" (:repo m) " - " (:description m)
    line
    (format-keys
     (line-template (max-width m))
     (select-keys m [:created_at :public :files :owner]))))
 
-(defn format-generic-map [m]
+(defmethod formatter :generic [{m :seq}]
   (format-keys (line-template (max-width m)) m))
 
-(defn format-sequence [s]
+(defmethod formatter :sequence [{s :seq}]
   (apply str (apply concat (interpose ["\n"] (partition-all 10 (interpose ", " s))))))
 
+(defmethod formatter :issue [{m :seq}]
+  (str
+   (:title m) " - #" (:number m)
+   line
+   (and (:body m) (str (:body m) "\n\n"))
+   (order-format
+    (line-template (max-width (dissoc m :number :title)))
+    m [[:user :labels :position :state :votes :comments]
+       [:created_at :updated_at :closed_at :gravatar_id]])))
+
+(defmethod formatter :comment [{m :seq}]
+  (str (:user m) " - " (:id m)
+       line
+       (and (:body m) (str (:body m) "\n\n"))
+       (let [m (dissoc m :body :user :id :gravatar_id)]
+         (format-keys (line-template (max-width m)) m))))
 
 (defn format-result-helper [result map-type]
   (str "\n"
        (cond
-        (map? result)
-        (case
-         map-type
-         :repo (format-repo-map result)
-         :user (format-user-map result)
-         :generic (format-generic-map result)
-         :gist (format-gist-map result))
+        (map? result) (formatter {:seq result :seq-type map-type})
         (string? result) (str result "\n")
         (nil? result) "wut"
         (not (seq result)) "Nothing interested happened.\n"
-        :else (str (format-sequence result) "\n"))))
+        :else (str (formatter {:seq result :seq-type :sequence}) "\n"))))
 
 (defn option-to-int [opt default]
   (cond
@@ -109,5 +122,3 @@
 
 (defn options [opts & options]
   (some opts options))
-
-
