@@ -16,8 +16,8 @@
 
 (deftask github.gists.contents
   "Show the contents of a gist. Pass in the id of the gist and the file name."
-  (format-result
-   (show-gist auth ((:github.gists.contents *opts*) 0) ((:github.gists.contents *opts*) 1))))
+  [{[one two] :github.gists.contents}]
+  (format-result (show-gist auth one two)))
 
 (deftask github.gists.show
   "Show metadata for another user's gists. Pass in the name of the user. Pass in --results
