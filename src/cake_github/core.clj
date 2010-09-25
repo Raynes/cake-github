@@ -72,7 +72,7 @@
 (defn format-sequence [s]
   (apply str (apply concat (interpose ["\n"] (partition-all 10 (interpose ", " s))))))
 
-;; This might become a multimethod.
+
 (defn format-result-helper [result map-type]
   (str "\n"
        (cond
