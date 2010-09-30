@@ -39,5 +39,5 @@
 (deftask github.users.set
   "Set information about a user. Pass in the username, a key, and a value to set that key
    to. Possible keys are name, email, blog, company, and location."
-  [{[one two three] :github.users.set}]
+  {[one two three] :github.users.set}
   (format-result (user-set auth one two three) :map-type :user))

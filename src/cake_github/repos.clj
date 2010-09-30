@@ -33,7 +33,7 @@
 
 (deftask github.repos.fork
   "Fork a repo. Pass in the owner of the repo you want to fork and the name of the repo."
-  [{[one two] :github.repos.fork}]
+  {[one two] :github.repos.fork}
   (format-result (fork-repo auth one two) :generate-clone-urls true))
 
 (deftask github.repos.set
@@ -41,27 +41,27 @@
    the key corresponding to the information you want to change, and the value you want
    to set it to. Possible keys are description, homepage, has_wiki, has_downloads,
    and has_issues."
-  [{[one two three four] :github.repos.set}]
+  {[one two three four] :github.repos.set}
   (format-result (set-repo-info auth one two three four)))
 
 (deftask github.repos.info
   "Get infomation about a repository. Pass in the owner of the repo and the name of the repo."
-  [{[one two] :github.repos.info}]
+  {[one two] :github.repos.info}
   (format-result (show-repo-info auth one two)))
 
 (deftask github.repos.watch
   "Watch a repo. Pass in the owner of the repo and the name of the repo."
-  [{[one two] :github.repos.watch}]
+  {[one two] :github.repos.watch}
   (format-result (watch-repo auth one two)))
 
 (deftask github.repos.unwatch
   "Unwatch a repo. Pass in the owner of the repo and the name of the repo."
-  [{[one two] :github.repos.unwatch}]
+  {[one two] :github.repos.unwatch}
   (format-result (unwatch-repo auth one two)))
 
 (deftask github.repos.tags
   "List the tags on a repo. Pass in the owner of the repo and it's name."
-  [{[one two] :github.repos.tag}]
+  {[one two] :github.repos.tag}
   (format-result (show-tags auth one two) :map-type :generic))
 
 (deftask github.repos.pushable
@@ -72,36 +72,36 @@
 (deftask github.repos.network
   "Show a repository's full network. Pass in the owner and name of the repository.
    Limit results with --results. The default limit is three."
-  [{[one two] :github.repos.network results :results}]
+  {[one two] :github.repos.network results :results}
   (format-result (show-network auth one two) :max results))
 
 (deftask github.repos.languages
   "List the languages used in a project. Values are in bytes. Limit results with --results.
    The default limit is three."
-  [{[one two] :github.repos.languages results :results}]
+  {[one two] :github.repos.languages results :results}
   (format-result (show-languages auth one two) :max results :map-type :generic))
 
 (deftask github.repos.contributors
   "List everybody who has contributed to a repo, including non-github-users.
    Pass the owner and name of the repository. Limit results with --results. Default limit is three."
-  [{[one two] :github.repos.contributors results :results}]
+  {[one two] :github.repos.contributors results :results}
   (format-result (show-contributors auth one two) :map-type :user :max results))
 
 (deftask github.repos.collaborators
   "List collaborators on a repo. Pass the owner and name of the repo."
-  [{[one two] :github.repos.collaborators}]
+  {[one two] :github.repos.collaborators}
   (format-result (show-collaborators auth one two)))
 
 (deftask github.repos.add-collaborator
   "Add a collaborator to your Github repository. Pass in the username you want to add and the
    name of the repo."
-  [{[one two] :github.repos.add-collaborator}]
+  {[one two] :github.repos.add-collaborator}
   (format-result (add-collaborator auth one two)))
 
 (deftask github.repos.rm-collaborator
   "Remove a collaborator from your Github repository. Pass in the username you want to remove
    and the name of the repo."
-  [{[one two] :github.repos.rm-collaborator}]
+  {[one two] :github.repos.rm-collaborator}
   (format-result (remove-collaborator auth one two)))
 
 (deftask github.repos.deploy
@@ -111,15 +111,15 @@
 (deftask github.repos.add-deploy
   "Add a deploy key to a repository. Pass in the name of the repository, title of the key
    and the key itself."
-  [{[one two three] :github.repos.add-deploy}]
+  {[one two three] :github.repos.add-deploy}
   (format-result (add-deploy-key auth one two three)))
 
 (deftask github.repos.rm-deploy
   "Remove a deploy key from a repository. Pass in the name of the repo and the title of the key."
-  [{[one two] :github.repos.rm-deploy}]
+  {[one two] :github.repos.rm-deploy}
   (format-result (remove-deploy-key auth one two)))
 
 (deftask github.repos.visibility
   "Set a repository's visibility. Pass in the name of the repo and either 'public' or 'private'."
-  [{[one two] :github.repos.visibility}]
+  {[one two] :github.repos.visibility}
   (format-result (set-repo-visibility one two)))

@@ -16,7 +16,7 @@
 
 (deftask github.gists.contents
   "Show the contents of a gist. Pass in the id of the gist and the file name."
-  [{[one two] :github.gists.contents}]
+  {[one two] :github.gists.contents}
   (format-result (show-gist auth one two)))
 
 (deftask github.gists.show
