@@ -20,8 +20,6 @@ Here is a brief, and incomplete list of improvements that cake-github has over g
 
 # Usage
 
-The whole thing is just a cake plugin. You'll want to be able to use it outside of a project, so you'll want to add the plugin to the :dev-dependencies in `~/.cake/project.clj`. You'll also need to add a :tasks key with the value `[cake-github.tasks]`. After that, do `cake deps --global`, and you should be all set.
-
 All commands are structured under two segment namespaces. Here is an example:
 
     rayne@ubuntu:~/cljprojs/cake-github$ cake github.users.info dom96
@@ -40,3 +38,67 @@ All commands are structured under two segment namespaces. Here is an example:
     location:          null
 
 There are commands for doing all sorts of stuff that you typically do through the Github website. A full command list is coming soon to a README near you.
+
+# Command List
+
+To find out more information about individual commands, do `cake help <command>`.
+
+## Gists
+
+    github.gists.new
+    github.gists.meta
+    github.gists.contents
+    github.gists.show
+
+## Users
+
+    github.users.follow
+    github.users.unfollow
+    github.users.search
+    github.users.followers
+    github.users.following
+    github.users.info
+    github.users.watching
+    github.users.set
+
+## Repos
+
+    github.repos.show
+    github.repos.search
+    github.repos.create
+    github.repos.delete
+    github.repos.fork
+    github.repos.set
+    github.repos.info
+    github.repos.watch
+    github.repos.unwatch
+    github.repos.tags
+    github.repos.pushable
+    github.repos.network
+    github.repos.languages
+    github.repos.contributors
+    github.repos.collaborators
+    github.repos.add-collaborator
+    github.repos.rm-collaborator
+    github.repos.deploy 
+    github.repos.add-deploy 
+    github.repos.rm.deploy
+    github.repos.visibility
+
+## Issues
+
+    github.issues.open
+    github.issues.info
+    github.issues.close
+    github.issues.comment
+    github.issues.tag
+    github.issues.untag
+    github.issues.tags
+    github.issues.comments
+    github.issues.show
+    github.issues.reopen
+    github.issues.search
+
+# Installation
+
+The whole thing is just a cake plugin. You'll want to be able to use it outside of a project, so you'll want to add the plugin to the :dev-dependencies in `~/.cake/project.clj`. You'll also need to add a :tasks key with the value `[cake-github.tasks]`. After that, do `cake deps --global`, and you should be all set.
