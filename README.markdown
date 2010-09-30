@@ -6,7 +6,7 @@ Have you ever desired to create a new Github repository immediately after creati
 
 The plugin will provide an interface to all, or most of the API. You'll be able to create, delete, search, and modify repositories, all from your terminal with cake. And that isn't even the beginning.
 
-# gotmilk
+## gotmilk
 
 This plugin is basically the evolution of gotmilk. Gotmilk is deprecated (pretty sure nobody used it anyway) from this point foreward. Since there are already excellent command-line tools for github, and the JVM startup time is too significant for gotmilk to ever be practical, there is no use in it continuing.
 
@@ -17,3 +17,26 @@ Here is a brief, and incomplete list of improvements that cake-github has over g
 * Cake's persistent JVM means no JVM startup time.
 * Enhanced (sane) formatting of API call results. It actually looks like a decent command-line tool now.
 * Integrated into the worlds tastiest build tool.
+
+# Usage
+
+The whole thing is just a cake plugin. You'll want to be able to use it outside of a project, so you'll want to add the plugin to the :dev-dependencies in `~/.cake/project.clj`. You'll also need to add a :tasks key with the value `[cake-github.tasks]`. After that, do `cake deps --global`, and you should be all set.
+
+All commands are structured under two segment namespaces. Here is an example:
+
+    rayne@ubuntu:~/cljprojs/cake-github$ cake github.users.info dom96
+
+    Dominik Picheta - 
+    -------------------------------------------
+    http://github.com/dom96
+    gravatar id:       d09fd89566b721c57bcb951acf2373f4
+    following count:   24
+    created at:        2010/04/18 07:05:30 -0700
+    blog:              http://dom96.co.cc/
+    public gist count: 66
+    public repo count: 13
+    company:           null
+    login:             dom96
+    location:          null
+
+There are commands for doing all sorts of stuff that you typically do through the Github website. A full command list is coming soon to a README near you.
