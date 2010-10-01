@@ -37,7 +37,7 @@ All commands are structured under two segment namespaces. Here is an example:
     login:             dom96
     location:          null
 
-There are commands for doing all sorts of stuff that you typically do through the Github website. A full command list is coming soon to a README near you.
+There are commands for doing all sorts of stuff that you typically do through the Github website.
 
 # Command List
 
