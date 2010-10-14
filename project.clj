@@ -1,4 +1,4 @@
-(defproject cake-github "0.0.1-SNAPSHOT"
+(defproject cake-github "0.1.0"
   :description "A cake plugin providing a command-line interface to the Github API."
   :dependencies [[clojure "1.2.0"]
                  [clj-github "1.0.0-SNAPSHOT"]]
