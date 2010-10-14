@@ -20,9 +20,9 @@ Here is a brief, and incomplete list of improvements that cake-github has over g
 
 # Usage
 
-All commands are structured under two segment namespaces. Here is an example:
+All commands are structured as two segments. The first being the 'category' of the API call, and the second being the actual command. Here is an example:
 
-    rayne@ubuntu:~/cljprojs/cake-github$ cake github.users.info dom96
+    rayne@ubuntu:~/cljprojs/cake-github$ cake users.info dom96
 
     Dominik Picheta - 
     -------------------------------------------
@@ -45,59 +45,59 @@ To find out more information about individual commands, do `cake help <command>`
 
 ## Gists
 
-    github.gists.new
-    github.gists.meta
-    github.gists.contents
-    github.gists.show
+    gists.new
+    gists.meta
+    gists.contents
+    gists.show
 
 ## Users
 
-    github.users.follow
-    github.users.unfollow
-    github.users.search
-    github.users.followers
-    github.users.following
-    github.users.info
-    github.users.watching
-    github.users.set
+    users.follow
+    users.unfollow
+    users.search
+    users.followers
+    users.following
+    users.info
+    users.watching
+    users.set
 
 ## Repos
 
-    github.repos.show
-    github.repos.search
-    github.repos.create
-    github.repos.delete
-    github.repos.fork
-    github.repos.set
-    github.repos.info
-    github.repos.watch
-    github.repos.unwatch
-    github.repos.tags
-    github.repos.pushable
-    github.repos.network
-    github.repos.languages
-    github.repos.contributors
-    github.repos.collaborators
-    github.repos.add-collaborator
-    github.repos.rm-collaborator
-    github.repos.deploy 
-    github.repos.add-deploy 
-    github.repos.rm.deploy
-    github.repos.visibility
+    repos.show
+    repos.search
+    repos.create
+    repos.delete
+    repos.fork
+    repos.set
+    repos.info
+    repos.watch
+    repos.unwatch
+    repos.tags
+    repos.pushable
+    repos.network
+    repos.languages
+    repos.contributors
+    repos.collaborators
+    repos.add-collaborator
+    repos.rm-collaborator
+    repos.deploy 
+    repos.add-deploy 
+    repos.rm.deploy
+    repos.visibility
 
 ## Issues
 
-    github.issues.open
-    github.issues.info
-    github.issues.close
-    github.issues.comment
-    github.issues.tag
-    github.issues.untag
-    github.issues.tags
-    github.issues.comments
-    github.issues.show
-    github.issues.reopen
-    github.issues.search
+    issues.open
+    issues.info
+    issues.close
+    issues.comment
+    issues.tag
+    issues.untag
+    issues.tags
+    issues.comments
+    issues.show
+    issues.reopen
+    issues.search
 
 # Installation
 
