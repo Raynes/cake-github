@@ -1,5 +1,6 @@
 (ns cake-github.core
-  (:use [clojure.java.shell :only [sh]]))
+  (:use [clojure.java.shell :only [sh]]
+        [clj-github.core :only [with-auth]]))
 
 (def line "\n-------------------------------------------\n")
 
@@ -119,6 +120,10 @@
                      (map clone-urls maps)
                      maps))))
      (format-result-helper (if generate-clone-urls (clone-urls x) x) map-type))))
+
+(defmacro format-api [& body]
+  `(with-auth auth
+     (format-result ~@body)))
 
 (defn options [opts & options]
   (some opts options))
